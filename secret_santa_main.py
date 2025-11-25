@@ -1,28 +1,28 @@
-#########################################################################
+#%%#########################################################################
 #------------------------------- IMPORTS -------------------------------#
 #########################################################################
 
 from secret_santa_config import *
 from secret_santa_utils import *
-import win32com.client
-import os
-import keyring
+
+
 
 #########################################################################
 #------------------------------- MAIN ----------------------------------#
 #########################################################################
 
 if __name__ == "__main__":
-    
-    # check for duplicate names and raise error
-    if len(PARTICIPANTS) != len(set(PARTICIPANTS)):
-        raise ValueError("Duplicate participant names detected. Please ensure all names are unique.")
-
+    # get participant list
+    participant_dict = extract_participant_list(PARTICIPANT_EXCEL_FILE, PARTICIPANTS)
+    # validate participant list
+    validate_participants(list(participant_dict.keys()))
     # assign gift matches
-    secret_santa_draw_dict = assign_matches(list(PARTICIPANTS.keys()))
-    
+    secret_santa_draw_dict = assign_matches(list(participant_dict.keys()))
     # send emails
-    email_secret_santa_draw(PARTICIPANTS, secret_santa_draw_dict, use_outlook=False, sender_email="jesse.tonkin1999@gmail.com", sender_password=keyring.get_password("EmailSMTP", "jesse.tonkin1999@gmail.com"))
-
-
-
+    email_secret_santa_draw(participant_dict, secret_santa_draw_dict, subject=EMAIL_SUBJECT, group_name=GROUP_NAME, instructions=INSTRUCTIONS, error_folder=ERROR_OUTPUT_FOLDER, sender_email="jesse.tonkin1999@gmail.com")
+    
+    
+    
+    
+    
+    
