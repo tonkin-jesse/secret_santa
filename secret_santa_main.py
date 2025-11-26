@@ -5,7 +5,7 @@
 from secret_santa_config import *
 from secret_santa_utils import *
 
-
+#%%
 
 #########################################################################
 #------------------------------- MAIN ----------------------------------#
@@ -13,7 +13,7 @@ from secret_santa_utils import *
 
 if __name__ == "__main__":
     # get participant list
-    participant_dict = extract_participant_list(PARTICIPANT_EXCEL_FILE, PARTICIPANTS)
+    participant_dict = extract_participant_list(excel_file_path=PARTICIPANT_EXCEL_FILE, txt_file_path=PARTICIPANT_TXT_FILE, participant_dict=PARTICIPANTS)
     # validate participant list
     validate_participants(list(participant_dict.keys()))
     # assign gift matches

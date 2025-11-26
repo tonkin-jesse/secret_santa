@@ -286,7 +286,7 @@ def validate_participants(participant_list):
 #------------------------------- UTILITIES -----------------------------#
 #########################################################################
 
-def extract_participant_list(excel_file_path, participant_dict):
+def extract_participant_list(excel_file_path, txt_file_path, participant_dict):
     """
     Extract participant names and email addresses from an Excel file.
 
@@ -315,7 +315,19 @@ def extract_participant_list(excel_file_path, participant_dict):
         except Exception as e:
             print(f"Attempt to use Excel file for participant list failed: {e}")
             print("Falling back to hardcoded PARTICIPANTS dictionary.")
-    
+    elif txt_file_path:
+        try:
+            df = pd.read_csv(txt_file_path)
+            if 'Name' not in df.columns or 'Email' not in df.columns:
+                raise ValueError("File must contain 'Name' and 'Email' columns.")
+            # Populate the PARTICIPANTS dictionary
+            participants = dict(zip(df['Name'].str.strip(), df['Email'].str.strip()))
+            print(pd.DataFrame.from_dict(participants, orient='index', columns=['Email']))
+            return participants
+
+        except Exception as e:
+            print(f"Attempt to use txt file for participant list failed: {e}")
+            print("Falling back to hardcoded PARTICIPANTS dictionary.")
     else:
         return participant_dict
 
