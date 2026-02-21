@@ -3,7 +3,6 @@
 #########################################################################
 
 import os
-import keyring
 USER = os.getlogin()
 
 
@@ -24,15 +23,18 @@ ERROR_OUTPUT_FOLDER = None
 #########################################################################
 
 PARTICIPANTS = {
-    #"Name": "Email"
+    #"Name": ["Email", ["AntiSecretSanta1", "AntiSecretSanta2"]],
 }
 
-# Email settings
-EMAIL_SUBJECT = "SECRET SANTA DRAW 1 (HOMEMADE/REPURPOSED PRESENT)"
+# Email contents
+EMAIL_SUBJECT = "SECRET SANTA"
 GROUP_NAME = "Tonkins and Special Friends"
 INSTRUCTIONS = "&emsp;Something homemade or that you found around the house<br>&emsp;Price range: <=$20<br>&emsp;Exchange date: 25/12/2025" #<br>&emsp;Exchange location: 
+
+# Email settings
+SENDER_EMAIL = os.environ["EmailAddress"]
 USE_OUTLOOK = False
-SENDER_EMAIL = "jesse.tonkin1999@gmail.com"
+
 
 
 

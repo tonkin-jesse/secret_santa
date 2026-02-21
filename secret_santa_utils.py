@@ -23,6 +23,95 @@ import urllib.parse
 #------------------------------- ALGORITHM -----------------------------#
 #########################################################################
 
+def brute_matches(participant_list, anti_santa_dict, max_attempts=1000, seed=None):
+    """
+    Assign Secret Santa matches using a brute force search algorithm
+    to respect anti-Secret Santa constraints.
+
+    Parameters
+    ----------
+    participant_list : list of str
+        A list of participant names.
+    anti_santa_dict : dict
+        A dictionary mapping participant names to lists of names they cannot be assigned to.
+    max_attempts : int, optional
+        Maximum number of attempts to find a valid assignment before giving up.
+    seed : int, optional
+        Random seed for reproducibility.
+
+    Returns
+    -------
+    dict
+        A dictionary mapping each participant (gifter) to another participant (giftee).
+    """
+    if seed is not None:
+        random.seed(seed)
+
+    for attempt in range(max_attempts):
+        assignments = {}
+        available_giftees = set(participant_list)
+
+        for gifter in participant_list:
+            possible_giftees = list(available_giftees - set(anti_santa_dict.get(gifter, [])) - {gifter})
+            if not possible_giftees:
+                break  # No valid giftee available, restart the process
+
+            giftee = random.choice(possible_giftees)
+            assignments[gifter] = giftee
+            available_giftees.remove(giftee)
+
+        if len(assignments) == len(participant_list):
+            return assignments  # Successful assignment
+
+    raise ValueError("Failed to assign Secret Santa matches within the maximum number of attempts.")
+
+
+def depth_first_matches(participant_list, anti_santa_dict, seed=None):
+    """
+    Assign Secret Santa matches using a depth-first search algorithm
+    to respect anti-Secret Santa constraints.
+
+    Parameters
+    ----------
+    participant_list : list of str
+        A list of participant names.
+    anti_santa_dict : dict
+        A dictionary mapping participant names to lists of names they cannot be assigned to.
+    max_attempts : int, optional
+        Maximum number of attempts to find a valid assignment before giving up.
+    seed : int, optional
+        Random seed for reproducibility.
+
+    Returns
+    -------
+    dict
+        A dictionary mapping each participant (gifter) to another participant (giftee).
+    """
+    if seed is not None:
+        random.seed(seed)
+
+    for attempt in range(max_attempts):
+        assignments = {}
+        available_giftees = set(participant_list)
+
+        for gifter in participant_list:
+            possible_giftees = list(available_giftees - set(anti_santa_dict.get(gifter, [])) - {gifter})
+            if not possible_giftees:
+                break  # No valid giftee available, restart the process
+
+            giftee = random.choice(possible_giftees)
+            assignments[gifter] = giftee
+            available_giftees.remove(giftee)
+
+        if len(assignments) == len(participant_list):
+            return assignments  # Successful assignment
+
+    raise ValueError("Failed to assign Secret Santa matches within the maximum number of attempts.")
+
+
+
+
+
 def assign_matches(participant_list, seed=None):
     """
     Randomly assign each participant a Secret Santa partner.
